@@ -2,6 +2,7 @@ import React from 'react';
 import {Button,Modal,ModalHeader,ModalBody,Row,Col,Label} from 'reactstrap';
 import 'font-awesome/css/font-awesome.min.css';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { addComment } from '../redux/ActionCreators';
 
 
 const required = (val) => val && val.length;
@@ -12,7 +13,8 @@ export default class CommentForm extends React.Component{
     constructor(){
         super();
         this.state={
-            isModalOpen: false
+            isModalOpen: false,
+            addComment
         }
         this.toggleModal = this.toggleModal.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -26,8 +28,9 @@ export default class CommentForm extends React.Component{
         this.toggleModal();
     }
     handleSubmit(values){
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
         console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
     }
     render(){
         return(
@@ -79,7 +82,7 @@ export default class CommentForm extends React.Component{
             </div>
             </ModalBody>
             </Modal>
-            <Button className="mx-auto mt-3" onClick={this.handleClick}><i className="fa fa-pencil mr-1" />Submit Comment</Button>
+            <Button className="btn btn-outline-danger" onClick={this.handleClick}><i className="fa fa-pencil mr-1"></i>Submit Comment</Button>
           </React.Fragment>
         );
     }
